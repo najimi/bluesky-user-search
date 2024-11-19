@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Box,
+  Card,
   Center,
   Container,
   Input,
@@ -118,38 +119,45 @@ export function App() {
             </Button>
           </HStack>
 
-          <HStack gap="6" py="2">
-            <Checkbox
-              checked={options.displayName}
-              onCheckedChange={() =>
-                setOptions((prev) => ({
-                  ...prev,
-                  displayName: !prev.displayName,
-                }))
-              }
-            >
-              Display name
-            </Checkbox>
-            <Checkbox
-              checked={options.handle}
-              onCheckedChange={() =>
-                setOptions((prev) => ({ ...prev, handle: !prev.handle }))
-              }
-            >
-              Handle
-            </Checkbox>
-            <Checkbox
-              checked={options.description}
-              onCheckedChange={() =>
-                setOptions((prev) => ({
-                  ...prev,
-                  description: !prev.description,
-                }))
-              }
-            >
-              Bio
-            </Checkbox>
-          </HStack>
+          <Card.Root mt="2" pt="0" size="sm">
+            <Card.Body>
+              <Text fontWeight="semibold" textStyle="sm">
+                Search within
+              </Text>
+              <HStack gap="6" pt="2">
+                <Checkbox
+                  checked={options.displayName}
+                  onCheckedChange={() =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      displayName: !prev.displayName,
+                    }))
+                  }
+                >
+                  Display name
+                </Checkbox>
+                <Checkbox
+                  checked={options.handle}
+                  onCheckedChange={() =>
+                    setOptions((prev) => ({ ...prev, handle: !prev.handle }))
+                  }
+                >
+                  Handle
+                </Checkbox>
+                <Checkbox
+                  checked={options.description}
+                  onCheckedChange={() =>
+                    setOptions((prev) => ({
+                      ...prev,
+                      description: !prev.description,
+                    }))
+                  }
+                >
+                  Bio
+                </Checkbox>
+              </HStack>
+            </Card.Body>
+          </Card.Root>
         </form>
         <Box pt="4">
           {loading && results.length === 0 && (
