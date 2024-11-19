@@ -14,17 +14,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Actor, SearchActorsResponse } from "@/types";
 import { BlueSkyLink } from "./components/bluesky-link";
 import { ResultsList } from "./components/results-list";
+import { useStore } from "./store";
 
 export function App() {
   const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<Actor[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [options, setOptions] = useState({
-    displayName: true,
-    handle: true,
-    description: true,
-  });
+
+  const formOptions = useStore((state) => state.formOptions);
+  const updateFormOptions = useStore((state) => state.updateFormOptions);
 
   const getSuggestions = async (
     query: string,
@@ -47,11 +46,11 @@ export function App() {
       const filteredResults = data.actors.filter((actor: Actor) => {
         return (
           actor.displayName &&
-          ((options.displayName &&
+          ((formOptions.displayName &&
             actor.displayName.toLowerCase().includes(query.toLowerCase())) ||
-            (options.handle &&
+            (formOptions.handle &&
               actor.handle.toLowerCase().includes(query.toLowerCase())) ||
-            (options.description &&
+            (formOptions.description &&
               actor.description?.toLowerCase().includes(query.toLowerCase())))
         );
       });
@@ -120,31 +119,25 @@ export function App() {
               </Text>
               <HStack gap="6" pt="2">
                 <Checkbox
-                  checked={options.displayName}
+                  checked={formOptions.displayName}
                   onCheckedChange={() =>
-                    setOptions((prev) => ({
-                      ...prev,
-                      displayName: !prev.displayName,
-                    }))
+                    updateFormOptions({ displayName: !formOptions.displayName })
                   }
                 >
                   Display name
                 </Checkbox>
                 <Checkbox
-                  checked={options.handle}
+                  checked={formOptions.handle}
                   onCheckedChange={() =>
-                    setOptions((prev) => ({ ...prev, handle: !prev.handle }))
+                    updateFormOptions({ handle: !formOptions.handle })
                   }
                 >
                   Handle
                 </Checkbox>
                 <Checkbox
-                  checked={options.description}
+                  checked={formOptions.description}
                   onCheckedChange={() =>
-                    setOptions((prev) => ({
-                      ...prev,
-                      description: !prev.description,
-                    }))
+                    updateFormOptions({ description: !formOptions.description })
                   }
                 >
                   Bio
