@@ -11,11 +11,13 @@ import {
   Table,
   Text,
   Link,
+  Flex,
 } from "@chakra-ui/react";
 import { Avatar } from "@/components/ui/avatar";
 import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Actor, SearchActorsResponse } from "@/types";
+import { BlueSkyLink } from "./components/bluesky-link";
 
 export function App() {
   const [query, setQuery] = useState<string>("");
@@ -83,127 +85,139 @@ export function App() {
   };
 
   return (
-    <Container maxW="5xl" py="8">
-      <form onSubmit={handleSubmit}>
-        <HStack justify="center" alignItems="flex-end">
-          <Field.Root>
-            <Box w="full">
-              <Field.Label>
-                <Text fontWeight="semibold" fontSize="lg" pb="1">
-                  Search BlueSky users
-                </Text>
-              </Field.Label>
-              <Input
-                className="peer"
-                placeholder=""
-                type="text"
-                value={query}
-                size="lg"
-                onInput={(e) => setQuery((e.target as HTMLInputElement).value)}
-              />
-            </Box>
-          </Field.Root>
-          <Button size="lg" type="submit" loading={loading} disabled={loading}>
-            Search
-          </Button>
-        </HStack>
-
-        <HStack gap="6" py="2">
-          <Checkbox
-            checked={options.displayName}
-            onCheckedChange={() =>
-              setOptions((prev) => ({
-                ...prev,
-                displayName: !prev.displayName,
-              }))
-            }
-          >
-            Display name
-          </Checkbox>
-          <Checkbox
-            checked={options.handle}
-            onCheckedChange={() =>
-              setOptions((prev) => ({ ...prev, handle: !prev.handle }))
-            }
-          >
-            Handle
-          </Checkbox>
-          <Checkbox
-            checked={options.description}
-            onCheckedChange={() =>
-              setOptions((prev) => ({
-                ...prev,
-                description: !prev.description,
-              }))
-            }
-          >
-            Bio
-          </Checkbox>
-        </HStack>
-      </form>
-      <Box pt="4">
-        {loading && results.length === 0 && (
-          <HStack gap="5">
-            <SkeletonCircle size="12" />
-            <Stack flex="1">
-              <Skeleton height="5" />
-              <Skeleton height="5" width="80%" />
-            </Stack>
+    <Flex direction="column" minHeight="100svh">
+      <Container maxW="5xl" pt="8" flex="1">
+        <form onSubmit={handleSubmit}>
+          <HStack justify="center" alignItems="flex-end">
+            <Field.Root>
+              <Box w="full">
+                <Field.Label>
+                  <Text fontWeight="semibold" fontSize="lg" pb="1">
+                    Search BlueSky users
+                  </Text>
+                </Field.Label>
+                <Input
+                  className="peer"
+                  placeholder=""
+                  type="text"
+                  value={query}
+                  size="lg"
+                  onInput={(e) =>
+                    setQuery((e.target as HTMLInputElement).value)
+                  }
+                />
+              </Box>
+            </Field.Root>
+            <Button
+              size="lg"
+              type="submit"
+              loading={loading}
+              disabled={loading}
+            >
+              Search
+            </Button>
           </HStack>
-        )}
-        {results.length > 0 && (
-          <Table.Root interactive size="sm">
-            <Table.Body>
-              {results.map((actor) => (
-                <Table.Row key={actor.did}>
-                  <Table.Cell w="40px" verticalAlign="top">
-                    <Avatar
-                      src={actor.avatar}
-                      name={actor.displayName}
-                      shape="full"
-                      size="md"
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Stack gapX="0" gapY={{ base: "1", md: "0" }}>
-                      <Stack
-                        gap={{ base: "0", md: "1" }}
-                        direction={{ base: "column", md: "row" }}
-                      >
-                        {actor.displayName && (
-                          <Text fontWeight="semibold" fontSize="sm">
-                            {actor.displayName}
-                          </Text>
-                        )}
-                        <Link
-                          fontWeight="semibold"
-                          color="blue.500"
-                          href={`https://bsky.app/profile/${actor.handle}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          variant="underline"
-                        >
-                          @{actor.handle}
-                        </Link>
-                      </Stack>
-                      {actor.description && <p>{actor.description}</p>}
-                    </Stack>
-                  </Table.Cell>
-                  <Table.Cell></Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
-        )}
-      </Box>
 
-      {results.length > 0 && cursor && (
-        <Center pt="5">
-          <Button onClick={loadMore} loading={loading} disabled={loading}>
-            Load More
-          </Button>
-        </Center>
-      )}
-    </Container>
+          <HStack gap="6" py="2">
+            <Checkbox
+              checked={options.displayName}
+              onCheckedChange={() =>
+                setOptions((prev) => ({
+                  ...prev,
+                  displayName: !prev.displayName,
+                }))
+              }
+            >
+              Display name
+            </Checkbox>
+            <Checkbox
+              checked={options.handle}
+              onCheckedChange={() =>
+                setOptions((prev) => ({ ...prev, handle: !prev.handle }))
+              }
+            >
+              Handle
+            </Checkbox>
+            <Checkbox
+              checked={options.description}
+              onCheckedChange={() =>
+                setOptions((prev) => ({
+                  ...prev,
+                  description: !prev.description,
+                }))
+              }
+            >
+              Bio
+            </Checkbox>
+          </HStack>
+        </form>
+        <Box pt="4">
+          {loading && results.length === 0 && (
+            <HStack gap="5">
+              <SkeletonCircle size="12" />
+              <Stack flex="1">
+                <Skeleton height="5" />
+                <Skeleton height="5" width="80%" />
+              </Stack>
+            </HStack>
+          )}
+          {results.length > 0 && (
+            <Table.Root interactive size="sm">
+              <Table.Body>
+                {results.map((actor) => (
+                  <Table.Row key={actor.did}>
+                    <Table.Cell w="40px" verticalAlign="top">
+                      <Avatar
+                        src={actor.avatar}
+                        name={actor.displayName}
+                        shape="full"
+                        size="md"
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Stack gapX="0" gapY={{ base: "1", md: "0" }}>
+                        <Stack
+                          gap={{ base: "0", md: "1" }}
+                          direction={{ base: "column", md: "row" }}
+                        >
+                          {actor.displayName && (
+                            <Text fontWeight="semibold" fontSize="sm">
+                              {actor.displayName}
+                            </Text>
+                          )}
+                          <Link
+                            fontWeight="semibold"
+                            color="blue.500"
+                            href={`https://bsky.app/profile/${actor.handle}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            variant="underline"
+                          >
+                            @{actor.handle}
+                          </Link>
+                        </Stack>
+                        {actor.description && <p>{actor.description}</p>}
+                      </Stack>
+                    </Table.Cell>
+                    <Table.Cell></Table.Cell>
+                  </Table.Row>
+                ))}
+              </Table.Body>
+            </Table.Root>
+          )}
+        </Box>
+
+        {results.length > 0 && cursor && (
+          <Center pt="5">
+            <Button onClick={loadMore} loading={loading} disabled={loading}>
+              Load More
+            </Button>
+          </Center>
+        )}
+      </Container>
+      <Box pb="4">
+        <BlueSkyLink />
+      </Box>
+    </Flex>
   );
 }
