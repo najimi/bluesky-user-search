@@ -1,157 +1,116 @@
-import { FormEvent, useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Box,
-  Card,
-  Container,
-  Input,
-  Field,
-  HStack,
-  Text,
-  Flex,
-} from "@chakra-ui/react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Actor, SearchActorsResponse } from "@/types";
-import { BlueSkyLink } from "./components/bluesky-link";
-import { ResultsList } from "./components/results-list";
-import { useStore } from "./store";
+import { Box, Container, Flex } from "@chakra-ui/react";
+import { FormEvent, useCallback } from "react";
+import { FormOptions, useStore } from "@/store";
+
+import { BlueskyLink } from "@/components/bluesky-link";
+import { ResultsList } from "@/components/results-list";
+import { SearchForm } from "./components/search-form";
+
+const MAX_RECURSION_DEPTH = 10;
 
 export function App() {
-  const [query, setQuery] = useState<string>("");
-  const [results, setResults] = useState<Actor[]>([]);
-  const [cursor, setCursor] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    cursor,
+    formOptions,
+    query,
+    resetResults,
+    setCursor,
+    setLoading,
+    updateResults,
+  } = useStore();
 
-  const formOptions = useStore((state) => state.formOptions);
-  const updateFormOptions = useStore((state) => state.updateFormOptions);
-
-  const getSuggestions = async (
-    query: string,
-    cursor: string | null = null
-  ) => {
-    setLoading(true);
-    try {
-      const url = new URL(
-        "https://api.bsky.app/xrpc/app.bsky.actor.searchActors"
-      );
-      url.searchParams.append("q", query);
-
-      if (cursor) {
-        url.searchParams.append("cursor", cursor);
+  const getSuggestions = useCallback(
+    async (
+      formOptions: FormOptions,
+      query: string,
+      cursor: string | null,
+      depth = 0
+    ) => {
+      if (depth > MAX_RECURSION_DEPTH) {
+        return;
       }
 
-      const response = await fetch(url.toString());
-      const data = (await response.json()) as SearchActorsResponse;
+      setLoading(true);
 
-      const filteredResults = data.actors.filter((actor: Actor) => {
-        return (
-          actor.displayName &&
-          ((formOptions.displayName &&
-            actor.displayName.toLowerCase().includes(query.toLowerCase())) ||
-            (formOptions.handle &&
-              actor.handle.toLowerCase().includes(query.toLowerCase())) ||
-            (formOptions.description &&
-              actor.description?.toLowerCase().includes(query.toLowerCase())))
+      try {
+        const url = new URL(
+          "https://public.api.bsky.app/xrpc/app.bsky.actor.searchActors"
         );
-      });
+        url.searchParams.append("q", query);
 
-      setResults((prevResults) => [...prevResults, ...filteredResults]);
+        if (cursor) {
+          url.searchParams.append("cursor", cursor);
+        }
 
-      setCursor(data.cursor ?? null);
-    } catch (error) {
-      console.error("Error fetching suggestions:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const response = await fetch(url.toString());
+        const data = (await response.json()) as SearchActorsResponse;
+        setCursor(data.cursor ?? null);
+
+        const filteredResults = data.actors.filter((actor: Actor) => {
+          const handle = actor.handle.toLowerCase();
+          const displayName = actor.displayName?.toLowerCase() ?? "";
+          const description = actor.description?.toLowerCase() ?? "";
+
+          const containsOmittedWord = formOptions.omit.some(
+            (omitWord) =>
+              displayName.includes(omitWord) ||
+              handle.includes(omitWord) ||
+              description.includes(omitWord)
+          );
+
+          if (containsOmittedWord) {
+            return false;
+          }
+
+          return (
+            displayName &&
+            ((formOptions.name &&
+              displayName.toLowerCase().includes(query.toLowerCase())) ||
+              handle.toLowerCase().includes(query.toLowerCase()) ||
+              (formOptions.description &&
+                description?.toLowerCase().includes(query.toLowerCase())))
+          );
+        });
+
+        updateResults(filteredResults);
+
+        if (filteredResults.length < 10 && data.cursor) {
+          await getSuggestions(formOptions, query, data.cursor, depth + 1);
+        }
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [setCursor, setLoading, updateResults]
+  );
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (query.trim()) {
-      setResults([]);
-      void getSuggestions(query);
+      resetResults();
+      void getSuggestions(formOptions, query, cursor);
     }
   };
-
-  const loadMore =
-    results.length > 0 && cursor
-      ? void getSuggestions(query, cursor)
-      : undefined;
 
   return (
     <Flex direction="column" minHeight="100svh">
       <Container maxW="5xl" pt="8" flex="1">
         <form onSubmit={handleSubmit}>
-          <HStack justify="center" alignItems="flex-end">
-            <Field.Root>
-              <Box w="full">
-                <Field.Label>
-                  <Text fontWeight="semibold" fontSize="lg" pb="1">
-                    Search BlueSky users
-                  </Text>
-                </Field.Label>
-                <Input
-                  className="peer"
-                  placeholder=""
-                  type="text"
-                  value={query}
-                  size="lg"
-                  onInput={(e) =>
-                    setQuery((e.target as HTMLInputElement).value)
-                  }
-                />
-              </Box>
-            </Field.Root>
-            <Button
-              size="lg"
-              type="submit"
-              loading={loading}
-              disabled={loading}
-            >
-              Search
-            </Button>
-          </HStack>
-
-          <Card.Root mt="2" pt="0" size="sm">
-            <Card.Body>
-              <Text fontWeight="semibold" textStyle="sm">
-                Search within
-              </Text>
-              <HStack gap="6" pt="2">
-                <Checkbox
-                  checked={formOptions.displayName}
-                  onCheckedChange={() =>
-                    updateFormOptions({ displayName: !formOptions.displayName })
-                  }
-                >
-                  Display name
-                </Checkbox>
-                <Checkbox
-                  checked={formOptions.handle}
-                  onCheckedChange={() =>
-                    updateFormOptions({ handle: !formOptions.handle })
-                  }
-                >
-                  Handle
-                </Checkbox>
-                <Checkbox
-                  checked={formOptions.description}
-                  onCheckedChange={() =>
-                    updateFormOptions({ description: !formOptions.description })
-                  }
-                >
-                  Bio
-                </Checkbox>
-              </HStack>
-            </Card.Body>
-          </Card.Root>
+          <SearchForm />
         </form>
 
-        <ResultsList loading={loading} loadMore={loadMore} results={results} />
+        <ResultsList
+          loadMore={() => {
+            void getSuggestions(formOptions, query, cursor);
+          }}
+        />
       </Container>
 
       <Box pb="4">
-        <BlueSkyLink />
+        <BlueskyLink />
       </Box>
     </Flex>
   );

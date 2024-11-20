@@ -1,7 +1,9 @@
-import { Actor } from "@/types";
+import { FormOptions } from "@/store";
 
 export interface ResultsListProps {
-  loading: boolean;
-  loadMore?: () => void;
-  results: Actor[];
+  loadMore(
+    formOptions: FormOptions,
+    query: string,
+    cursor: string | null
+  ): void;
 }

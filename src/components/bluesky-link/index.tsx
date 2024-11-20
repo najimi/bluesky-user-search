@@ -1,7 +1,8 @@
-import { Center, Stack, Text } from "@chakra-ui/react";
 import "./styles.css";
 
-export const BlueSkyLink = () => {
+import { Center, Stack, Text } from "@chakra-ui/react";
+
+export const BlueskyLink = () => {
   return (
     <Center pt="8">
       <a

@@ -1,22 +1,26 @@
-import { Button } from "@/components/ui/button";
 import {
   Box,
   Center,
-  Stack,
   HStack,
+  Link,
+  Stack,
   Table,
   Text,
-  Link,
 } from "@chakra-ui/react";
-import { Avatar } from "@/components/ui/avatar";
 import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
-import { ResultsListProps } from "./types";
 
-export const ResultsList = ({
-  loading,
-  loadMore,
-  results = [],
-}: ResultsListProps) => {
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { ResultsListProps } from "./types";
+import { useStore } from "@/store";
+
+export const ResultsList = ({ loadMore }: ResultsListProps) => {
+  const loading = useStore((state) => state.loading);
+  const results = useStore((state) => state.results);
+  const cursor = useStore((state) => state.cursor);
+  const query = useStore((state) => state.query);
+  const formOptions = useStore((state) => state.formOptions);
+
   return (
     <>
       <Box pt="4">
@@ -76,7 +80,7 @@ export const ResultsList = ({
         )}
       </Box>
 
-      {loadMore && (
+      {results.length > 0 && cursor && (
         <Center pt="5">
           <Button onClick={loadMore} loading={loading} disabled={loading}>
             Load More
