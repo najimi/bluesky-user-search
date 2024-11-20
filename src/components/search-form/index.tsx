@@ -75,7 +75,7 @@ export const SearchForm = () => {
             alignItems="stretch"
           >
             <Box>
-              <Text fontWeight="semibold" textStyle="sm">
+              <Text fontWeight="semibold" textStyle="md">
                 Search within
               </Text>
               <Stack direction="column" gap="1" pt="2">
