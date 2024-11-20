@@ -11,20 +11,23 @@ import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { EmptyState } from "@/components/ui/empty-state";
+import { MdManageSearch } from "react-icons/md";
 import { ResultsListProps } from "./types";
 import { useStore } from "@/store";
 
 export const ResultsList = ({ loadMore }: ResultsListProps) => {
-  const loading = useStore((state) => state.loading);
-  const results = useStore((state) => state.results);
-  const cursor = useStore((state) => state.cursor);
-  const query = useStore((state) => state.query);
-  const formOptions = useStore((state) => state.formOptions);
+  const { loading, results, cursor, query } = useStore();
+
+  const showSkeleton = Boolean(loading && results.length === 0);
+  const showNoResults = Boolean(
+    !loading && results.length === 0 && query.length > 0
+  );
 
   return (
     <>
       <Box pt="4">
-        {loading && results.length === 0 && (
+        {showSkeleton && (
           <HStack gap="5">
             <SkeletonCircle size="12" />
             <Stack flex="1">
@@ -32,6 +35,14 @@ export const ResultsList = ({ loadMore }: ResultsListProps) => {
               <Skeleton height="5" width="80%" />
             </Stack>
           </HStack>
+        )}
+
+        {showNoResults && (
+          <EmptyState
+            icon={<MdManageSearch />}
+            title="No results found"
+            description="Try adjusting your search"
+          />
         )}
 
         {results.length > 0 && (
