@@ -161,9 +161,6 @@ h1 {
   }
 }
 
-.form-wrapper {
-}
-
 .results-wrapper {
   overflow: hidden;
 }
@@ -171,4 +168,11 @@ h1 {
 .scroll-container {
   overflow-y: auto;
   height: 100%;
+}
+
+.filters-card {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 0;
 }
