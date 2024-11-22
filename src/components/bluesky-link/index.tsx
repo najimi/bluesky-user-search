@@ -28,9 +28,7 @@ export const BlueskyLink = () => {
             <use xlinkHref="#wing" className="left" />
             <use xlinkHref="#wing" className="right" />
           </svg>
-          <Text textStyle="md" fontWeight="semibold">
-            @frontend.irish
-          </Text>
+          <Text textStyle="sm">@frontend.irish</Text>
         </Stack>
       </a>
     </Center>

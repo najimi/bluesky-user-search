@@ -1,16 +1,6 @@
 .bluesky-flutter {
   display: inline-flex;
-  gap: 0.5em;
-  align-items: center;
-  color: #3984e8;
-
-  :hover {
-    color: var(--bluesky-blue);
-
-    svg {
-      color: inherit;
-    }
-  }
+  color: white;
 }
 
 .bluesky-flutter svg {
