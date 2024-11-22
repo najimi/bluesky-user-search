@@ -15,10 +15,12 @@ import { CloseButton } from "@/components/ui/close-button";
 import { Field } from "@/components/ui/field";
 import { InputGroup } from "@/components/ui/input-group";
 import { LuFilter } from "react-icons/lu";
+import { Show } from "@chakra-ui/react";
 import { useState } from "react";
 import { useStore } from "@/store";
 
 export const SearchForm = () => {
+  const [showFilters, setShowFilters] = useState(false);
   const [formError, setFormError] = useState(false);
   const { formOptions, loading, setQuery, query, updateFormOptions } =
     useStore();
@@ -56,12 +58,14 @@ export const SearchForm = () => {
         <InputGroup
           flex="1"
           endElement={
-            <CloseButton
-              left="0.6rem"
-              onClick={() => {
-                setQuery("");
-              }}
-            />
+            query.length > 0 ? (
+              <CloseButton
+                left="0.6rem"
+                onClick={() => {
+                  setQuery("");
+                }}
+              />
+            ) : null
           }
         >
           <Input
@@ -76,10 +80,13 @@ export const SearchForm = () => {
           />
         </InputGroup>
         <Button
-          aria-label="Show filters"
+          id="filters-button"
+          aria-expanded={showFilters}
+          aria-label={showFilters ? "Hide filters" : "Show filters"}
           size="lg"
           variant="outline"
           aspectRatio="1"
+          onClick={() => setShowFilters((state) => !state)}
         >
           <LuFilter size="lg" />
         </Button>
@@ -93,62 +100,65 @@ export const SearchForm = () => {
           Search
         </Button>
       </Grid>
-
-      <Card.Root mt="2" pt="0" size="sm">
-        <Card.Body>
-          <Stack
-            direction={["column", "row"]}
-            gap={["4", "6"]}
-            alignItems="stretch"
-          >
-            <Box>
-              <Text fontWeight="semibold" textStyle="md">
-                Search within
-              </Text>
-              <Stack direction="column" gap="1" pt="2">
-                <Checkbox
-                  size="sm"
-                  checked={formOptions.name}
-                  onCheckedChange={() =>
-                    updateFormOptions({ name: !formOptions.name })
-                  }
+      <Show when={showFilters}>
+        <Card.Root aria-controls="filters-button" mt="2" pt="0" size="sm">
+          <Card.Body>
+            <Stack
+              direction={["column", "row"]}
+              gap={["4", "6"]}
+              alignItems="stretch"
+            >
+              <Box>
+                <Text fontWeight="semibold" textStyle="md">
+                  Search within
+                </Text>
+                <Stack direction="column" gap="1" pt="2">
+                  <Checkbox
+                    size="sm"
+                    checked={formOptions.name}
+                    onCheckedChange={() =>
+                      updateFormOptions({ name: !formOptions.name })
+                    }
+                  >
+                    Name/Handle
+                  </Checkbox>
+                  <Checkbox
+                    size="sm"
+                    checked={formOptions.description}
+                    onCheckedChange={() =>
+                      updateFormOptions({
+                        description: !formOptions.description,
+                      })
+                    }
+                  >
+                    Bio
+                  </Checkbox>
+                </Stack>
+              </Box>
+              <Flex minHeight="inherit" alignItems="stretch">
+                <Separator orientation={["horizontal", "vertical"]} />
+              </Flex>
+              <Box>
+                <Field
+                  invalid={formError}
+                  label="Omit"
+                  fontWeight="semibold"
+                  textStyle="sm"
+                  helperText={!formError && "Separate words with commas"}
+                  errorText="Away with your tricks!"
                 >
-                  Name/Handle
-                </Checkbox>
-                <Checkbox
-                  size="sm"
-                  checked={formOptions.description}
-                  onCheckedChange={() =>
-                    updateFormOptions({ description: !formOptions.description })
-                  }
-                >
-                  Bio
-                </Checkbox>
-              </Stack>
-            </Box>
-            <Flex minHeight="inherit" alignItems="stretch">
-              <Separator orientation={["horizontal", "vertical"]} />
-            </Flex>
-            <Box>
-              <Field
-                invalid={formError}
-                label="Omit"
-                fontWeight="semibold"
-                textStyle="sm"
-                helperText={!formError && "Separate words with commas"}
-                errorText="Away with your tricks!"
-              >
-                <Input
-                  id="search-input"
-                  size="xs"
-                  placeholder="e.g. x.com, bot"
-                  onChange={handleOmitChange}
-                />
-              </Field>
-            </Box>
-          </Stack>
-        </Card.Body>
-      </Card.Root>
+                  <Input
+                    id="search-input"
+                    size="xs"
+                    placeholder="e.g. x.com, bot"
+                    onChange={handleOmitChange}
+                  />
+                </Field>
+              </Box>
+            </Stack>
+          </Card.Body>
+        </Card.Root>
+      </Show>
     </Box>
   );
 };
