@@ -79,6 +79,7 @@ export const SearchForm = () => {
           endElement={
             query.length > 0 ? (
               <CloseButton
+                borderRadius="12px"
                 left="0.6rem"
                 onClick={() => {
                   setQuery("");
@@ -88,6 +89,7 @@ export const SearchForm = () => {
           }
         >
           <Input
+            borderRadius="12px"
             aria-label="Search Bluesky users"
             background="white"
             placeholder="Who are you looking for?"
@@ -105,6 +107,7 @@ export const SearchForm = () => {
           aria-label={showFilters ? "Hide filters" : "Show filters"}
           aspectRatio="1"
           background="white"
+          borderRadius="12px"
           ref={filtersButtonRef}
           id="filters-button"
           size="lg"
@@ -200,6 +203,7 @@ export const SearchForm = () => {
         </AnimatePresence>
 
         <Button
+          borderRadius="12px"
           disabled={loading || formError}
           gridColumn={["1 / -1", "auto"]}
           loading={loading}

@@ -65,7 +65,7 @@ export const ResultsList = ({
               variants={variants}
               viewport={{
                 amount: 0.8,
-                margin: "40px 0px 40px 0px",
+                margin: "40px 0px 0px 0px",
                 once: true,
                 root: intersectionRef,
               }}

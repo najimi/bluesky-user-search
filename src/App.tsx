@@ -100,7 +100,7 @@ export function App() {
     <>
       <Box as="header">
         <Text as="h1" textStyle="3xl" fontWeight="bold">
-          <Text as="span" fontWeight="bold" textTransform="uppercase">
+          <Text as="span" fontWeight="semibold" textTransform="uppercase">
             Bluesky
           </Text>
           User search
@@ -113,7 +113,7 @@ export function App() {
           </form>
         </Box>
         <Box as="section" className="results-wrapper" ref={intersectionRef}>
-          <Box className="scroll-container">
+          <Box className="scroll-container" pb="1.2rem">
             <ResultsList
               intersectionRef={intersectionRef}
               loadMore={() => {

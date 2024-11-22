@@ -15,6 +15,7 @@ createRoot(document.getElementById("root")!).render(
         appearance="light"
         maxW="5xl"
         background="#f7fbff"
+        backgroundImage="linear-gradient(150deg, #fff 0%, #d3ecfb 100%) !important"
       >
         <App />
       </Theme>
