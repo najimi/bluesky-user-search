@@ -21,6 +21,7 @@ import { useStore } from "@/store";
 
 export const SearchForm = () => {
   const [formError, setFormError] = useState(false);
+  const [localQuery, setLocalQuery] = useState("");
   const { formOptions, loading, setQuery, query, updateFormOptions } =
     useStore();
 
@@ -30,6 +31,7 @@ export const SearchForm = () => {
 
   const handleOmitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormError(false);
+    setLocalQuery(event.target.value);
     const value = event.target.value.trim();
 
     if (!value) {
@@ -192,6 +194,7 @@ export const SearchForm = () => {
                           placeholder="e.g. x.com, bot"
                           size="xs"
                           onChange={handleOmitChange}
+                          value={localQuery}
                         />
                       </Field>
                     </Box>
