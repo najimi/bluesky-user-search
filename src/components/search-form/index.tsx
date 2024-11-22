@@ -42,20 +42,19 @@ export const SearchForm = () => {
   };
 
   return (
-    <>
-      <HStack justify="center" alignItems="flex-end">
-        <Field label="Search Bluesky users">
-          <Input
-            className="peer"
-            placeholder="e.g. frontend developer"
-            type="text"
-            value={query}
-            size="lg"
-            onInput={(e) =>
-              setQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())
-            }
-          />
-        </Field>
+    // Extra Padding here accounting for focus rings
+    <Box paddingLeft="4px" paddingRight="4px">
+      <HStack justify="center" alignItems="flex-end" pt="4">
+        <Input
+          aria-label="Search Bluesky users"
+          placeholder="Who are you looking for?"
+          type="text"
+          value={query}
+          size="lg"
+          onInput={(e) =>
+            setQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())
+          }
+        />
 
         <Button
           size="lg"
@@ -122,6 +121,6 @@ export const SearchForm = () => {
           </Stack>
         </Card.Body>
       </Card.Root>
-    </>
+    </Box>
   );
 };

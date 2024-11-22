@@ -1,9 +1,8 @@
 import { Actor, SearchActorsResponse } from "@/types";
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { FormEvent, useCallback } from "react";
 import { FormOptions, useStore } from "@/store";
 
-import { BlueskyLink } from "@/components/bluesky-link";
 import { ResultsList } from "@/components/results-list";
 import { SearchForm } from "./components/search-form";
 
@@ -96,22 +95,31 @@ export function App() {
   };
 
   return (
-    <Flex direction="column" minHeight="100svh">
-      <Container maxW="5xl" pt="8" flex="1">
-        <form onSubmit={handleSubmit}>
-          <SearchForm />
-        </form>
-
-        <ResultsList
-          loadMore={() => {
-            void getSuggestions(formOptions, query, cursor);
-          }}
-        />
-      </Container>
-
-      <Box pb="4">
-        <BlueskyLink />
+    <>
+      <Box as="header">
+        <Text as="h1" textStyle="3xl" fontWeight="bold">
+          <Text as="span" fontWeight="bold" textTransform="uppercase">
+            Bluesky
+          </Text>
+          User search
+        </Text>
       </Box>
-    </Flex>
+      <Box as="main" className="main">
+        <Box as="section" className="form-wrapper">
+          <form onSubmit={handleSubmit}>
+            <SearchForm />
+          </form>
+        </Box>
+        <Box as="section" className="results-wrapper">
+          <Box className="scroll-container">
+            <ResultsList
+              loadMore={() => {
+                void getSuggestions(formOptions, query, cursor);
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </>
   );
 }

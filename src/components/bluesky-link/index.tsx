@@ -4,7 +4,7 @@ import { Center, Stack, Text } from "@chakra-ui/react";
 
 export const BlueskyLink = () => {
   return (
-    <Center pt="8">
+    <Center>
       <a
         href="https://bsky.app/profile/frontend.irish"
         className="bluesky-flutter"
@@ -28,7 +28,9 @@ export const BlueskyLink = () => {
             <use xlinkHref="#wing" className="left" />
             <use xlinkHref="#wing" className="right" />
           </svg>
-          <Text>@frontend.irish</Text>
+          <Text textStyle="md" fontWeight="semibold">
+            @frontend.irish
+          </Text>
         </Stack>
       </a>
     </Center>
