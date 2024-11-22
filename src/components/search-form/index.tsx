@@ -2,7 +2,7 @@ import {
   Box,
   Card,
   Flex,
-  HStack,
+  Grid,
   Input,
   Separator,
   Stack,
@@ -11,7 +11,10 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CloseButton } from "@/components/ui/close-button";
 import { Field } from "@/components/ui/field";
+import { InputGroup } from "@/components/ui/input-group";
+import { LuFilter } from "react-icons/lu";
 import { useState } from "react";
 import { useStore } from "@/store";
 
@@ -44,27 +47,52 @@ export const SearchForm = () => {
   return (
     // Extra Padding here accounting for focus rings
     <Box paddingLeft="4px" paddingRight="4px">
-      <HStack justify="center" alignItems="flex-end" pt="4">
-        <Input
-          aria-label="Search Bluesky users"
-          placeholder="Who are you looking for?"
-          type="text"
-          value={query}
-          size="lg"
-          onInput={(e) =>
-            setQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())
+      <Grid
+        pt="4"
+        gap="6px"
+        templateColumns={["1fr auto", "1fr auto auto"]}
+        templateRows={["auto auto", "1fr"]}
+      >
+        <InputGroup
+          flex="1"
+          endElement={
+            <CloseButton
+              left="0.6rem"
+              onClick={() => {
+                setQuery("");
+              }}
+            />
           }
-        />
-
+        >
+          <Input
+            aria-label="Search Bluesky users"
+            placeholder="Who are you looking for?"
+            type="text"
+            value={query}
+            size="lg"
+            onInput={(e) =>
+              setQuery((e.target as HTMLInputElement).value.toLocaleLowerCase())
+            }
+          />
+        </InputGroup>
+        <Button
+          aria-label="Show filters"
+          size="lg"
+          variant="outline"
+          aspectRatio="1"
+        >
+          <LuFilter size="lg" />
+        </Button>
         <Button
           size="lg"
           type="submit"
           loading={loading}
           disabled={loading || formError}
+          gridColumn={["1 / -1", "auto"]}
         >
           Search
         </Button>
-      </HStack>
+      </Grid>
 
       <Card.Root mt="2" pt="0" size="sm">
         <Card.Body>

@@ -4,7 +4,7 @@ import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { MdManageSearch } from "react-icons/md";
+import { LuSearch } from "react-icons/lu";
 import { ResultsListProps } from "./types";
 import { useStore } from "@/store";
 
@@ -30,7 +30,7 @@ export const ResultsList = ({ loadMore }: ResultsListProps) => {
 
       {showNoResults && (
         <EmptyState
-          icon={<MdManageSearch />}
+          icon={<LuSearch />}
           title="No results found"
           description="Try adjusting your search"
         />
