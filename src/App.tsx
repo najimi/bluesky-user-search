@@ -1,10 +1,11 @@
 import { Actor, SearchActorsResponse } from "@/types";
 import { Box, Text } from "@chakra-ui/react";
-import { FormEvent, useCallback, useRef } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import { FormOptions, useStore } from "@/store";
 
+import { Alert } from "@/components/ui/alert";
 import { ResultsList } from "@/components/results-list";
-import { SearchForm } from "./components/search-form";
+import { SearchForm } from "@/components/search-form";
 
 const MAX_RECURSION_DEPTH = 10;
 
@@ -18,6 +19,8 @@ export function App() {
     setLoading,
     updateResults,
   } = useStore();
+
+  const [showAlert, setShowAlert] = useState(false);
 
   const intersectionRef = useRef<HTMLDivElement>(null);
 
@@ -45,8 +48,15 @@ export function App() {
         }
 
         const response = await fetch(url.toString());
+
+        if (response.status === 429) {
+          setShowAlert(true);
+          return;
+        }
+
         const data = (await response.json()) as SearchActorsResponse;
         setCursor(data.cursor ?? null);
+        setShowAlert(false);
 
         const filteredResults = data.actors.filter((actor: Actor) => {
           const handle = actor.handle.toLowerCase();
@@ -113,6 +123,16 @@ export function App() {
           </form>
         </Box>
         <Box as="section" className="results-wrapper" ref={intersectionRef}>
+          {showAlert && (
+            <Alert
+              borderRadius="12px"
+              status="error"
+              title="Rate Limit Exceeded"
+            >
+              We&apos;re too popular. Try again in some amount of time
+              ¯\_(ツ)_/¯
+            </Alert>
+          )}
           <Box className="scroll-container" pb="1.2rem">
             <ResultsList
               intersectionRef={intersectionRef}
