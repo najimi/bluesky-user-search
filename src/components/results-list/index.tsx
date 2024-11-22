@@ -1,4 +1,13 @@
-import { Center, HStack, Link, Stack, Table, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  HStack,
+  Link,
+  Stack,
+  Table,
+  Text,
+} from "@chakra-ui/react";
 import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 
 import { Avatar } from "@/components/ui/avatar";
@@ -9,12 +18,11 @@ import { ResultsListProps } from "./types";
 import { useStore } from "@/store";
 
 export const ResultsList = ({ loadMore }: ResultsListProps) => {
-  const { loading, results, cursor, query } = useStore();
+  const { loading, results, cursor } = useStore();
 
-  const showSkeleton = Boolean(loading && results.length === 0);
-  const showNoResults = Boolean(
-    !loading && results.length === 0 && query.length > 0
-  );
+  const hasResults = Boolean((results?.length ?? 0) > 0);
+  const showSkeleton = Boolean(loading && results?.length === 0);
+  const showNoResults = Boolean(!loading && results?.length === 0);
 
   return (
     <>
@@ -29,17 +37,27 @@ export const ResultsList = ({ loadMore }: ResultsListProps) => {
       )}
 
       {showNoResults && (
-        <EmptyState
-          icon={<LuSearch />}
-          title="No results found"
-          description="Try adjusting your search"
-        />
+        <Flex
+          height="70%"
+          justify="center"
+          align="center"
+          gap="2"
+          direction="column"
+        >
+          <LuSearch size="40px" />
+          <Text fontWeight="semibold" fontSize="x-large">
+            No results found
+          </Text>
+          <Text fontWeight="" fontSize="sm">
+            Try adjusting your search
+          </Text>
+        </Flex>
       )}
 
-      {results.length > 0 && (
+      {hasResults && (
         <Table.Root interactive size="sm">
           <Table.Body>
-            {results.map((actor) => (
+            {results?.map((actor) => (
               <Table.Row key={actor.did}>
                 <Table.Cell w="40px" verticalAlign="top">
                   <Avatar
@@ -81,7 +99,7 @@ export const ResultsList = ({ loadMore }: ResultsListProps) => {
         </Table.Root>
       )}
 
-      {results.length > 0 && cursor && (
+      {hasResults && cursor && (
         <Center pt="5">
           <Button onClick={loadMore} loading={loading} disabled={loading}>
             Load More

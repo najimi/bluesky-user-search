@@ -12,7 +12,7 @@ export interface Store {
   formOptions: FormOptions;
   loading: boolean;
   query: string;
-  results: Actor[];
+  results: Actor[] | null;
   resetResults: () => void;
   setCursor: (cursor: string | null) => void;
   setLoading: (loading: boolean) => void;
@@ -30,13 +30,13 @@ export const useStore = create<Store>((set) => ({
   },
   loading: false,
   query: "",
-  results: [],
-  resetResults: () => set({ results: [] }),
+  results: null,
+  resetResults: () => set({ results: null }),
   setCursor: (cursor: string | null) => set({ cursor }),
   setLoading: (loading: boolean) => set({ loading }),
   setQuery: (query: string) => set({ query }),
   updateResults: (newResults: Actor[]) =>
-    set((state) => ({ results: [...state.results, ...newResults] })),
+    set((state) => ({ results: [...(state.results ?? []), ...newResults] })),
   updateFormOptions: (option: Partial<FormOptions>) =>
     set((state: Store) => ({
       formOptions: { ...state.formOptions, ...option },
