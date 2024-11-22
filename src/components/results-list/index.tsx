@@ -1,5 +1,4 @@
 import {
-  Box,
   Center,
   Flex,
   HStack,
@@ -12,7 +11,6 @@ import { Skeleton, SkeletonCircle } from "@/components/ui/skeleton";
 
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state";
 import { LuSearch } from "react-icons/lu";
 import { ResultsListProps } from "./types";
 import { useStore } from "@/store";
