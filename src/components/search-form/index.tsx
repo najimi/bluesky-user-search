@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import {
   Box,
   Card,
@@ -67,7 +67,6 @@ export const SearchForm = () => {
     // Extra Padding here accounting for focus rings
     <Box paddingLeft="4px" paddingRight="4px" position="relative">
       <Grid
-        background="white"
         gap="6px"
         position="relative"
         pt="4"
@@ -90,6 +89,7 @@ export const SearchForm = () => {
         >
           <Input
             aria-label="Search Bluesky users"
+            background="white"
             placeholder="Who are you looking for?"
             size="lg"
             type="text"
@@ -104,6 +104,7 @@ export const SearchForm = () => {
           aria-expanded={showFilters}
           aria-label={showFilters ? "Hide filters" : "Show filters"}
           aspectRatio="1"
+          background="white"
           ref={filtersButtonRef}
           id="filters-button"
           size="lg"

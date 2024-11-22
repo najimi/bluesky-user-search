@@ -10,7 +10,12 @@ import { createRoot } from "react-dom/client";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
-      <Theme className="wrapper" appearance="light" maxW="5xl">
+      <Theme
+        className="wrapper"
+        appearance="light"
+        maxW="5xl"
+        background="#f7fbff"
+      >
         <App />
       </Theme>
       {/* <BlueskyLink /> */}

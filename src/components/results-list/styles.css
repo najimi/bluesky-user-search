@@ -1,0 +1,21 @@
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style-type: none;
+  padding: 4px;
+}
+
+.user-item {
+  display: flex;
+  gap: 8px;
+
+  padding: 10px;
+  border-radius: 12px;
+
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 4px;
+
+  /* To do with the framer motion.li */
+  opacity: 0;
+}

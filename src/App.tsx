@@ -1,6 +1,6 @@
 import { Actor, SearchActorsResponse } from "@/types";
 import { Box, Text } from "@chakra-ui/react";
-import { FormEvent, useCallback } from "react";
+import { FormEvent, useCallback, useRef } from "react";
 import { FormOptions, useStore } from "@/store";
 
 import { ResultsList } from "@/components/results-list";
@@ -18,6 +18,8 @@ export function App() {
     setLoading,
     updateResults,
   } = useStore();
+
+  const intersectionRef = useRef<HTMLDivElement>(null);
 
   const getSuggestions = useCallback(
     async (
@@ -110,9 +112,10 @@ export function App() {
             <SearchForm />
           </form>
         </Box>
-        <Box as="section" className="results-wrapper">
+        <Box as="section" className="results-wrapper" ref={intersectionRef}>
           <Box className="scroll-container">
             <ResultsList
+              intersectionRef={intersectionRef}
               loadMore={() => {
                 void getSuggestions(formOptions, query, cursor);
               }}
