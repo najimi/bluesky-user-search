@@ -35,7 +35,7 @@ export function App() {
         return;
       }
 
-      const lowercaseQuery = query.toLocaleLowerCase();
+      const lowercaseQuery = query.trim().toLocaleLowerCase();
 
       setLoading(true);
 
