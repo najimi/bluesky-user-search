@@ -121,7 +121,7 @@ body {
 
   @media (min-width: 768px) {
     border-radius: 24px;
-    padding: 2rem 10vw 0;
+    padding: 2rem 7% 0;
     margin-bottom: 0.5rem;
   }
 }
