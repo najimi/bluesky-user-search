@@ -117,7 +117,7 @@ export function App() {
         </Text>
       </Box>
       <Box as="main" className="main">
-        <Box as="section" className="form-wrapper">
+        <Box as="section">
           <form onSubmit={handleSubmit}>
             <SearchForm />
           </form>

@@ -142,7 +142,7 @@ export const SearchForm = () => {
               }}
               onKeyDown={handleKeyDown}
             >
-              <Card.Root mt="2" pt="0" size="sm">
+              <Card.Root mt="2" pt="0" size="sm" borderRadius="12px">
                 <Card.Body>
                   <Stack
                     direction={["column", "row"]}
