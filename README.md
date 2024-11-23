@@ -9,4 +9,6 @@ An extended search for more accurately finding Bluesky users. Created by [@front
 - [Vite](https://vite.dev/)
 - [React](https://react.dev/)
 - [Bluesky HTTP API](https://docs.bsky.app/docs/category/http-reference)
+- [Sentry](https://sentry.io/)
+- [Fathom](https://usefathom.com/ref/MJPDSB)
 - [Netlify](https://www.netlify.com/)
