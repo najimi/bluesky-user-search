@@ -5,6 +5,8 @@ export interface FormOptions {
   name: boolean;
   description: boolean;
   omit: string[];
+  noDescription: boolean;
+  noDisplayName: boolean;
 }
 
 export interface Store {
@@ -27,6 +29,8 @@ export const useStore = create<Store>((set) => ({
     name: true,
     description: true,
     omit: [],
+    noDescription: true,
+    noDisplayName: true,
   },
   loading: false,
   query: "",

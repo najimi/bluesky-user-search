@@ -186,7 +186,7 @@ export const SearchForm = () => {
                         fontWeight="semibold"
                         helperText={!formError && "Separate words with commas"}
                         invalid={formError}
-                        label="Omit"
+                        label="Omit words"
                         textStyle="sm"
                       >
                         <Input
@@ -197,6 +197,38 @@ export const SearchForm = () => {
                           value={localQuery}
                         />
                       </Field>
+                    </Box>
+                    <Flex minHeight="inherit" alignItems="stretch">
+                      <Separator orientation={["horizontal", "vertical"]} />
+                    </Flex>
+                    <Box>
+                      <Text fontWeight="semibold" textStyle="md">
+                        Excluded
+                      </Text>
+                      <Stack direction="column" gap="1" pt="2">
+                        <Checkbox
+                          checked={formOptions.noDisplayName}
+                          size="sm"
+                          onCheckedChange={() =>
+                            updateFormOptions({
+                              noDisplayName: !formOptions.noDisplayName,
+                            })
+                          }
+                        >
+                          No name
+                        </Checkbox>
+                        <Checkbox
+                          checked={formOptions.noDescription}
+                          size="sm"
+                          onCheckedChange={() =>
+                            updateFormOptions({
+                              noDescription: !formOptions.noDescription,
+                            })
+                          }
+                        >
+                          No bio
+                        </Checkbox>
+                      </Stack>
                     </Box>
                   </Stack>
                 </Card.Body>

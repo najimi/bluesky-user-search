@@ -35,13 +35,16 @@ export function App() {
         return;
       }
 
+      const lowercaseQuery = query.toLocaleLowerCase();
+
       setLoading(true);
 
       try {
         const url = new URL(
           "https://public.api.bsky.app/xrpc/app.bsky.actor.searchActors"
         );
-        url.searchParams.append("q", query);
+
+        url.searchParams.append("q", lowercaseQuery);
 
         if (cursor) {
           url.searchParams.append("cursor", cursor);
@@ -63,6 +66,14 @@ export function App() {
           const displayName = actor.displayName?.toLowerCase() ?? "";
           const description = actor.description?.toLowerCase() ?? "";
 
+          if (formOptions.noDisplayName && displayName.length === 0) {
+            return false;
+          }
+
+          if (formOptions.noDescription && description.length === 0) {
+            return false;
+          }
+
           const containsOmittedWord = formOptions.omit.some(
             (omitWord) =>
               displayName.includes(omitWord) ||
@@ -75,12 +86,10 @@ export function App() {
           }
 
           return (
-            displayName &&
-            ((formOptions.name &&
-              displayName.toLowerCase().includes(query.toLowerCase())) ||
-              handle.toLowerCase().includes(query.toLowerCase()) ||
-              (formOptions.description &&
-                description?.toLowerCase().includes(query.toLowerCase())))
+            (formOptions.name &&
+              (handle.includes(lowercaseQuery) ||
+                displayName.includes(lowercaseQuery))) ||
+            (formOptions.description && description.includes(lowercaseQuery))
           );
         });
 
