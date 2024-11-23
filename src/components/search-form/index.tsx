@@ -25,7 +25,8 @@ export const SearchForm = () => {
   const { formOptions, loading, setQuery, query, updateFormOptions } =
     useStore();
 
-  const [showFilters, setShowFilters] = useState(false);
+  // null is used as a third value to not focus filter button on load (useEffect junk)
+  const [showFilters, setShowFilters] = useState<boolean | null>(null);
   const filtersButtonRef = useRef<HTMLButtonElement>(null);
   const firstFilterElementRef = useRef<HTMLInputElement>(null);
 
@@ -58,9 +59,9 @@ export const SearchForm = () => {
   };
 
   useEffect(() => {
-    if (showFilters) {
+    if (showFilters === true) {
       firstFilterElementRef.current?.focus();
-    } else {
+    } else if (showFilters === false) {
       filtersButtonRef.current?.focus();
     }
   }, [showFilters]);
@@ -91,6 +92,7 @@ export const SearchForm = () => {
           }
         >
           <Input
+            autoFocus
             borderRadius="12px"
             aria-label="Search Bluesky users"
             background="white"
@@ -105,7 +107,7 @@ export const SearchForm = () => {
         </InputGroup>
 
         <Button
-          aria-expanded={showFilters}
+          aria-expanded={showFilters === true}
           aria-label={showFilters ? "Hide filters" : "Show filters"}
           aspectRatio="1"
           background="white"
@@ -114,7 +116,7 @@ export const SearchForm = () => {
           id="filters-button"
           size="lg"
           variant="outline"
-          onClick={() => setShowFilters((state) => !state)}
+          onClick={() => setShowFilters((prev) => prev === null || !prev)}
         >
           <LuFilter size="lg" />
         </Button>
