@@ -109,9 +109,13 @@ export function App() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (query.trim()) {
+    const value = query.trim();
+    if (value) {
       resetResults();
-      void getSuggestions(formOptions, query, cursor);
+      void getSuggestions(formOptions, value, cursor);
+      if (window.fathom) {
+        window.fathom.trackEvent("search", { _value: value });
+      }
     }
   };
 
