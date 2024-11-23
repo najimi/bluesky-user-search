@@ -37,6 +37,17 @@ export const ResultsList = ({
         </HStack>
       )}
 
+      {results === null && !loading && (
+        <Flex height="100%" justify="center" align="center" color="red">
+          <img
+            alt=""
+            className="placeholder-image"
+            loading="lazy"
+            src="/profile-placeholder.svg"
+          />
+        </Flex>
+      )}
+
       {showNoResults && (
         <Flex
           height="70%"

@@ -176,3 +176,10 @@ h1 {
   width: 100%;
   z-index: 0;
 }
+
+.placeholder-image {
+  display: block;
+  filter: saturate(0.8);
+  opacity: 0.08;
+  width: 50%;
+}
