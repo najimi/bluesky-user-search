@@ -1,11 +1,12 @@
 import { Actor, SearchActorsResponse } from "@/types";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import { FormOptions, useStore } from "@/store";
 
 import { Alert } from "@/components/ui/alert";
 import { ResultsList } from "@/components/results-list";
 import { SearchForm } from "@/components/search-form";
+import { Header } from "./components/header";
 
 const MAX_RECURSION_DEPTH = 10;
 
@@ -121,14 +122,7 @@ export function App() {
 
   return (
     <>
-      <Box as="header">
-        <Text as="h1" textStyle="3xl" fontWeight="bold">
-          <Text as="span" fontWeight="semibold" textTransform="uppercase">
-            Bluesky
-          </Text>
-          User search
-        </Text>
-      </Box>
+      <Header />
       <Box as="main" className="main">
         <Box as="section">
           <form onSubmit={handleSubmit}>
