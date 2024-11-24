@@ -7,7 +7,8 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { LuSearch } from "react-icons/lu";
 import { ResultsListProps } from "./types";
-import { motion } from "motion/react";
+import * as m from "motion/react-m";
+
 import { useStore } from "@/store";
 
 export const ResultsList = ({
@@ -69,7 +70,7 @@ export const ResultsList = ({
       {hasResults && (
         <ul className="user-list">
           {results?.map((actor) => (
-            <motion.li
+            <m.li
               key={actor.did}
               className="user-item"
               whileInView="visible"
@@ -116,7 +117,7 @@ export const ResultsList = ({
                   </Text>
                 )}
               </Stack>
-            </motion.li>
+            </m.li>
           ))}
         </ul>
       )}

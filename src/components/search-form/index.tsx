@@ -1,6 +1,6 @@
 import "./styles.css";
 
-import { AnimatePresence, motion } from "motion/react";
+import * as m from "motion/react-m";
 import {
   Box,
   Card,
@@ -123,123 +123,121 @@ export const SearchForm = () => {
           <LuFilter size="lg" />
         </Button>
 
-        <AnimatePresence>
-          {showFilters && (
-            <motion.div
-              aria-controls="filters-button"
-              className="filters-card"
-              initial={{
-                opacity: 0,
-                y: -40,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: -40,
-                transition: {
-                  ease: "easeOut",
-                  duration: 0.2,
-                },
-              }}
-              onKeyDown={handleKeyDown}
-            >
-              <Card.Root mt="2" pt="0" size="sm" borderRadius="12px">
-                <Card.Body>
-                  <Stack
-                    direction={["column", "row"]}
-                    gap={["4", "6"]}
-                    alignItems="stretch"
-                  >
-                    <Box>
-                      <Text fontWeight="semibold" textStyle="md">
-                        Search within
-                      </Text>
-                      <Stack direction="column" gap="1" pt="2">
-                        <Checkbox
-                          checked={formOptions.name}
-                          size="sm"
-                          ref={firstFilterElementRef}
-                          onCheckedChange={() =>
-                            updateFormOptions({ name: !formOptions.name })
-                          }
-                        >
-                          Name/Handle
-                        </Checkbox>
-                        <Checkbox
-                          checked={formOptions.description}
-                          size="sm"
-                          onCheckedChange={() =>
-                            updateFormOptions({
-                              description: !formOptions.description,
-                            })
-                          }
-                        >
-                          Bio
-                        </Checkbox>
-                      </Stack>
-                    </Box>
-                    <Flex minHeight="inherit" alignItems="stretch">
-                      <Separator orientation={["horizontal", "vertical"]} />
-                    </Flex>
-                    <Box>
-                      <Field
-                        errorText="Away with your tricks!"
-                        fontWeight="semibold"
-                        helperText={!formError && "Separate words with commas"}
-                        invalid={formError}
-                        label="Omit words"
-                        textStyle="sm"
+        {showFilters && (
+          <m.div
+            aria-controls="filters-button"
+            className="filters-card"
+            initial={{
+              opacity: 0,
+              y: -40,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            exit={{
+              opacity: 0,
+              y: -40,
+              transition: {
+                ease: "easeOut",
+                duration: 0.2,
+              },
+            }}
+            onKeyDown={handleKeyDown}
+          >
+            <Card.Root mt="2" pt="0" size="sm" borderRadius="12px">
+              <Card.Body>
+                <Stack
+                  direction={["column", "row"]}
+                  gap={["4", "6"]}
+                  alignItems="stretch"
+                >
+                  <Box>
+                    <Text fontWeight="semibold" textStyle="md">
+                      Search within
+                    </Text>
+                    <Stack direction="column" gap="1" pt="2">
+                      <Checkbox
+                        checked={formOptions.name}
+                        size="sm"
+                        ref={firstFilterElementRef}
+                        onCheckedChange={() =>
+                          updateFormOptions({ name: !formOptions.name })
+                        }
                       >
-                        <Input
-                          id="search-input"
-                          placeholder="e.g. x.com, bot"
-                          size="xs"
-                          onChange={handleOmitChange}
-                          value={localQuery}
-                        />
-                      </Field>
-                    </Box>
-                    <Flex minHeight="inherit" alignItems="stretch">
-                      <Separator orientation={["horizontal", "vertical"]} />
-                    </Flex>
-                    <Box>
-                      <Text fontWeight="semibold" textStyle="md">
-                        Excluded
-                      </Text>
-                      <Stack direction="column" gap="1" pt="2">
-                        <Checkbox
-                          checked={formOptions.noDisplayName}
-                          size="sm"
-                          onCheckedChange={() =>
-                            updateFormOptions({
-                              noDisplayName: !formOptions.noDisplayName,
-                            })
-                          }
-                        >
-                          No name
-                        </Checkbox>
-                        <Checkbox
-                          checked={formOptions.noDescription}
-                          size="sm"
-                          onCheckedChange={() =>
-                            updateFormOptions({
-                              noDescription: !formOptions.noDescription,
-                            })
-                          }
-                        >
-                          No bio
-                        </Checkbox>
-                      </Stack>
-                    </Box>
-                  </Stack>
-                </Card.Body>
-              </Card.Root>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                        Name/Handle
+                      </Checkbox>
+                      <Checkbox
+                        checked={formOptions.description}
+                        size="sm"
+                        onCheckedChange={() =>
+                          updateFormOptions({
+                            description: !formOptions.description,
+                          })
+                        }
+                      >
+                        Bio
+                      </Checkbox>
+                    </Stack>
+                  </Box>
+                  <Flex minHeight="inherit" alignItems="stretch">
+                    <Separator orientation={["horizontal", "vertical"]} />
+                  </Flex>
+                  <Box>
+                    <Field
+                      errorText="Away with your tricks!"
+                      fontWeight="semibold"
+                      helperText={!formError && "Separate words with commas"}
+                      invalid={formError}
+                      label="Omit words"
+                      textStyle="sm"
+                    >
+                      <Input
+                        id="search-input"
+                        placeholder="e.g. x.com, bot"
+                        size="xs"
+                        onChange={handleOmitChange}
+                        value={localQuery}
+                      />
+                    </Field>
+                  </Box>
+                  <Flex minHeight="inherit" alignItems="stretch">
+                    <Separator orientation={["horizontal", "vertical"]} />
+                  </Flex>
+                  <Box>
+                    <Text fontWeight="semibold" textStyle="md">
+                      Excluded
+                    </Text>
+                    <Stack direction="column" gap="1" pt="2">
+                      <Checkbox
+                        checked={formOptions.noDisplayName}
+                        size="sm"
+                        onCheckedChange={() =>
+                          updateFormOptions({
+                            noDisplayName: !formOptions.noDisplayName,
+                          })
+                        }
+                      >
+                        No name
+                      </Checkbox>
+                      <Checkbox
+                        checked={formOptions.noDescription}
+                        size="sm"
+                        onCheckedChange={() =>
+                          updateFormOptions({
+                            noDescription: !formOptions.noDescription,
+                          })
+                        }
+                      >
+                        No bio
+                      </Checkbox>
+                    </Stack>
+                  </Box>
+                </Stack>
+              </Card.Body>
+            </Card.Root>
+          </m.div>
+        )}
 
         <Button
           borderRadius="12px"

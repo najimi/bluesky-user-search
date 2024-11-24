@@ -8,6 +8,7 @@ import { Provider } from "@/components/ui/provider";
 import { StrictMode } from "react";
 import { Theme } from "@chakra-ui/react";
 import { createRoot } from "react-dom/client";
+import { LazyMotion } from "motion/react";
 
 Sentry.init({
   dsn: "https://e85975005f8b2da1837475a4832751bd@o4508348275228672.ingest.de.sentry.io/4508348280012880",
@@ -27,6 +28,10 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 });
 
+// Lazy load "motion" features
+const loadFeatures = () =>
+  import("./motion-features.ts").then((res) => res.default);
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
@@ -37,7 +42,9 @@ createRoot(document.getElementById("root")!).render(
         background="#f7fbff"
         backgroundImage="linear-gradient(150deg, #fff 0%, #d3ecfb 100%) !important"
       >
-        <App />
+        <LazyMotion strict features={loadFeatures}>
+          <App />
+        </LazyMotion>
       </Theme>
       <BlueskyLink />
     </Provider>
