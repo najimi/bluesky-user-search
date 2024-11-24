@@ -1,0 +1,6 @@
+.filters-card {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 0;
+}

@@ -1,3 +1,5 @@
+import "./styles.css";
+
 import { AnimatePresence, motion } from "motion/react";
 import {
   Box,
