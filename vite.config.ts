@@ -32,23 +32,23 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("@chakra") || id.includes("@emotion")) {
+            if (
+              id.includes("@chakra-ui/react") ||
+              id.includes("@emotion/react")
+            ) {
               return "chakra";
+            }
+            if (id.includes("recat-icons")) {
+              return "icons";
             }
             if (id.includes("motion")) {
               return "motion";
-            }
-            if (id.includes("react-icons")) {
-              return "icons";
             }
             if (id.includes("@sentry")) {
               return "sentry";
             }
             if (id.includes("zustand")) {
               return "zustand";
-            }
-            if (id.includes("react") || id.includes("react-dom")) {
-              return "react-vendors";
             }
 
             return "vendor";
