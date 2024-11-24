@@ -43,7 +43,6 @@ export const ResultsList = ({
           <img
             alt=""
             className="placeholder-image"
-            loading="lazy"
             src="/profile-placeholder.svg"
           />
         </Flex>
