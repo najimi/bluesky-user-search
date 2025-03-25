@@ -27,6 +27,18 @@ export const SearchForm = () => {
   const { formOptions, loading, setQuery, query, updateFormOptions } =
     useStore();
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    
+    if (query) {
+      params.set("q", query);
+    } else {
+       params.delete("q");
+     }
+  
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, "", newUrl);
+  }, [query]);
   // null is used as a third value to not focus filter button on load (useEffect junk)
   const [showFilters, setShowFilters] = useState<boolean | null>(null);
   const filtersButtonRef = useRef<HTMLButtonElement>(null);
