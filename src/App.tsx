@@ -1,6 +1,6 @@
 import { Actor, SearchActorsResponse } from "@/types";
 import { Box } from "@chakra-ui/react";
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { FormEvent, useCallback, useRef, useState, useEffect} from "react";
 import { FormOptions, useStore } from "@/store";
 
 import { Alert } from "@/components/ui/alert";
