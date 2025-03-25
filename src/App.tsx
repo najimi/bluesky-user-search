@@ -120,6 +120,15 @@ export function App() {
     }
   };
 
+  // Searches when query is set from url parameter
+
+  useEffect(() => {
+    if (query.trim()) {
+      resetResults();
+      void getSuggestions(formOptions, query, null);
+    }
+  }, [query]);
+
   return (
     <>
       <Header />
