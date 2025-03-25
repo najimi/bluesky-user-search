@@ -26,6 +26,13 @@ export const SearchForm = () => {
   const [localQuery, setLocalQuery] = useState("");
   const { formOptions, loading, setQuery, query, updateFormOptions } =
     useStore();
+  
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const queryFromUrl = params.get("q")?.toLocaleLowerCase() || "";
+    setQuery(queryFromUrl);
+    setLocalQuery(queryFromUrl);
+  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
